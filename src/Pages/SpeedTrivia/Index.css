@@ -1,0 +1,294 @@
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.flex-container {
+  /* We first create a flex layout context */
+  display: flex;
+  
+  /* Then we define the flow direction 
+     and if we allow the items to wrap 
+   * Remember this is the same as:
+   * flex-direction: row;
+   * flex-wrap: wrap;
+   */
+  flex-flow: row wrap;
+  
+  /* Then we define how is distributed the remaining space */
+  justify-content: space-around;
+  
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  margin-top: 50px;
+}
+
+.flex-container li {
+  width: 96px;
+  height: 120px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+  position: relative;
+  border:  solid 5px #2f3036;
+  background: transparent;
+  color: #2f3036;
+}
+
+.flex-container li.small {
+  background: white;
+  padding: 5px;
+  width: 90px;
+  margin-top: 10px;
+  line-height: 30px;
+  color: #2f3036;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+  border: solid #2f3036 2px;
+}
+
+.flex-container li.small input{
+  width: 50px;
+  background-color: #19c589;
+}
+
+.flex-container li.active {
+  color: white;
+  background: #2f3036;
+  border: none;
+}
+
+.flex-container li .name {
+  font-size: 1em;
+  position: absolute;
+  bottom: 0;
+  left: 2px;
+}
+
+.flex-container li .controller {
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  left: 2px;
+}
+
+.flex-container li .score{
+  font-size: 3em;
+  line-height: 100px;
+}
+
+#banner {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items:center;
+  vertical-align: middle;
+  margin-top: 50px;
+}
+
+#banner.stage0 .box {
+  background: #AA4465;
+}
+
+#banner.stage1 .box {
+  background: #fff;
+  color: black;
+}
+
+#banner.stage2 .box {
+  background: #151414;
+  color: white;
+  font-weight: bolder;
+}
+
+#banner.stage2 .active-choice {
+  border: solid 5px black;
+  font-size: 200%;
+}
+
+#banner.stage2 ul {
+  list-style: none;
+}
+
+#banner.stage3 .box {
+  background: #27ccb1;
+}
+
+#banner.stage2 .box.questionOption0,
+#banner.stage2 .box.questionOption1,
+#banner.stage2 .box.questionOption2,
+#banner.stage2 .box.questionOption3,
+#banner.stage2 .box.questionOption4,
+#banner.stage2 .box.questionOption5,
+#banner.stage2 .box.questionOption6,
+#banner.stage2 .box.questionOption7
+{
+  background: white;
+  color: black;
+}
+
+#banner.stage1 .box .box-contents,#banner.stage2 .box .box-contents, #banner.stage3 .box .box-contents {
+  flex-direction: column;
+}
+
+#banner.stage3 p {
+  margin-block: unset;
+}
+
+.questionOption0 audio, .questionOption1 audio, .questionOption2 audio, .questionOption3 audio, .questionOption4 audio, .questionOption5 audio, .questionOption6 audio,  .questionOption7 audio,
+.questionOption0 #question-map, .questionOption1 #question-map, .questionOption2 #question-map, .questionOption3 #question-map, .questionOption4 #question-map, .questionOption5 #question-map, .questionOption6 #question-map,  .questionOption7 #question-map
+{
+   display: none;
+}
+
+#question-map {
+  position: relative;
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  width: 50%;
+}
+
+#question-map img, #question-map p {
+  display: inline;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+#question-map img {
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+#question-map p {
+  padding: 5px;
+  background: transparent;
+  color: red;
+  border: solid 2px red;
+}
+
+/*Animated Big Box*/
+
+.box{
+  background-color: #DDFFF7;
+  position: relative;
+  box-shadow: 10px 10px 42px 0 rgba(0,0,0,0.75);
+  margin-bottom: 100px;
+  vertical-align: middle;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bolder;
+  margin-bottom: 0px;
+}
+
+.box:after, .box:before{
+  mix-blend-mode:multiply;
+  filter:none;
+  z-index: -1;
+  content:'';
+  width:calc(100% + (50px * 2));
+  height:calc(100% + (50px * 2));
+  position: absolute;
+  display: block;
+  animation: border 10s ease-in-out infinite;
+  transform:translateX(-50px) translateY(-50px);
+}
+
+.box-contents{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+}
+
+@keyframes border {
+  0%, 100% {
+    -webkit-clip-path: polygon(0 0, calc(100% - (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 100%, calc(0% + (33.3333333333px)) calc(100% - (33.3333333333px)));
+            clip-path: polygon(0 0, calc(100% - (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 100%, calc(0% + (33.3333333333px)) calc(100% - (33.3333333333px)));
+  }
+  50% {
+    -webkit-clip-path: polygon(calc(0% + (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 0, calc(100% - (33.3333333333px)) calc(100% - (33.3333333333px)), 0 100%);
+            clip-path: polygon(calc(0% + (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 0, calc(100% - (33.3333333333px)) calc(100% - (33.3333333333px)), 0 100%);
+  }
+}
+
+.box:after{
+  animation-delay: -5s;
+  background-color: #93e1d8;
+  clip-path: polygon(0 0, calc(100% - (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 100%, calc(0% + (33.3333333333px)) calc(100% - (33.3333333333px)));
+  height:calc(40% + (10px * 2));
+}
+.box:before {
+  background-color: #AA4465;
+    clip-path: polygon(calc(0% + (33.3333333333px)) calc(0% + (33.3333333333px)), 100% 0, calc(100% - (33.3333333333px)) calc(100% - (33.3333333333px)), 0 100%);
+}
+
+.box h1 {
+    font-size: 3rem;
+}
+
+.box p {
+    font-size: 1rem;
+}
+
+.box input, .box input:active {
+  border:none;
+  color:white;
+  outline: none;
+}
+
+.box.questionOptionfalse p {
+  font-size: 2.5rem;
+}
+
+#banner .box.questionOptionfalse .box-contents {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.stage2 .box h1, .stage3 .box h1 {
+  border:  solid 5px;
+  padding: 5px;
+}
+
+.box .start {
+  color:white;
+  background:transparent;
+  width: 150px;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  border: none;
+  font-size: 30px;
+}
+
+.box .start:hover, .box .test:focus {
+  background:rgba(0,0,0,.5);
+}
+
+.box .start:active {
+  background:rgba(0,0,0,1);
+}
+
+.box .test {
+  color:white;
+  background:transparent;
+  line-height: 50px;
+  width: 150px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  text-align: center;
+  font-size: 30px;
+}

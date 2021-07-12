@@ -1,0 +1,96 @@
+/*Strip the ul of padding and list styling*/
+ul#nav {
+    list-style-type:none;
+    margin:0;
+    margin-top: 30px;
+    padding:0;
+    width: 100%;
+    background: #93e1d8;
+    bottom: 0;
+}
+/*Create a horizontal list with spacing*/
+ul#nav li {
+    display:inline-block;
+    margin-right: 1px;
+}
+/*Style for menu links*/
+ul#nav li a {
+    display:block;
+    min-width:140px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #fff;
+    background: #AA4465;
+    text-decoration: none;
+}
+/*Hover state for top level links*/
+ul#nav li:hover a {
+    background: black;
+}
+/*Style for dropdown links*/
+ul#nav li:hover ul a {
+    background: #f3f3f3;
+    color: #2f3036;
+    height: 40px;
+    line-height: 40px;
+}
+/*Hover state for dropdown links*/
+ul#nav li:hover ul a:hover {
+    background: #19c589;
+    color: #fff;
+}
+/*Hide dropdown links until they are needed*/
+ul#nav li ul {
+    display: none;
+}
+/*Make dropdown links vertical*/
+ul#nav li ul li {
+    display: block;
+    float: none;
+}
+/*Prevent text wrapping*/
+ul#nav li ul li a {
+    width: auto;
+    min-width: 100px;
+    padding: 0 20px;
+}
+/*Display the dropdown on hover*/
+ul#nav li a:hover + .hidden, .hidden:hover {
+    display: block;
+}
+/*Style 'show menu' label button and hide it by default*/
+.show-menu {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    color: #fff;
+    background: #19c589;
+    text-align: center;
+    padding: 10px 0;
+    display: none;
+}
+/*Hide checkbox*/
+ul#nav input[type=checkbox]{
+    display: none;
+}
+/*Show menu when invisible checkbox is checked*/
+ul#nav input[type=checkbox]:checked ~ #menu{
+    display: block;
+}
+/*Responsive Styles*/
+@media screen and (max-width : 760px){
+
+    /*Create vertical spacing*/
+    ul#nav li {
+        margin-bottom: 1px;
+    }
+    /*Make all menu links full width*/
+    ul#nav li, li a {
+        width: 100%;
+    }
+    /*Display 'show menu' link*/
+    .show-menu {
+        display:block;
+    }
+}

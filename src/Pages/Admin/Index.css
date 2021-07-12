@@ -1,0 +1,13 @@
+.admin-column {
+  float: left;
+  width: 45%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Clear floats after the columns */
+.admin-row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
