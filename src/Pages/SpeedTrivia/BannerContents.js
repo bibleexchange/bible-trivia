@@ -94,7 +94,8 @@ function questionFinished(data, setData, updateScores=true){
     if(updateScores){
       newData.players = data.players.map((player)=>{
         if(player.active !== false && playerHasNotAnsweredBefore(player, data)){
-          const score = {id: data.questions[data.question].id, score: -25, option:data.option}
+          const score = {answer: null, id: data.questions[data.question].id, option: null, round: data.round, score: -25}
+          console.log(score)
           player.scores.push(score)
         }
         return player;    
@@ -106,13 +107,12 @@ function questionFinished(data, setData, updateScores=true){
 function BannerContents({data, setData, questionId, unasked, musicEffect}){
 
     const [test, setTest] = useState("READY")
-    const [buzzed, setBuzzed] = useState([])
-    
+
     const start = ()=>{
-              let newData = {
+          let newData = {
           ...data,
           stage: 1,
-          context: new window.AudioContext()
+          buzzed:[]//context: new window.AudioContext()
         }
 
         if(questionId){
@@ -213,8 +213,6 @@ function BannerContents({data, setData, questionId, unasked, musicEffect}){
         image={image}
         audio={audio}
         questionFinished={questionFinished}
-        buzzed={buzzed}
-        setBuzzed={setBuzzed}
         />
 
       case 3:

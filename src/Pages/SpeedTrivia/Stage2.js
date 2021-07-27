@@ -28,10 +28,10 @@ function QuestionOptions({data, question}){
     return option()
 }
 
-function Stage2({question, choices, nextOption, playSound, sfx, playerHasNotAnsweredBefore,askQuestion,image, audio,data, setData, questionFinished, musicEffect, buzzed, setBuzzed}){
+function Stage2({question, choices, nextOption, playSound, sfx, playerHasNotAnsweredBefore,askQuestion,image, audio,data, setData, questionFinished, musicEffect}){
     
     let autoFocusInput = ""
-
+    console.log(data.buzzed)
     if(data.option !== false){
 
       audio = <SoundPlayer max={5} hide={true} src={"/audio/dramaticbuilding.mp3"} onEnd={()=>{}}/>
@@ -41,17 +41,14 @@ function Stage2({question, choices, nextOption, playSound, sfx, playerHasNotAnsw
         onKeyUp={(event)=>{
           let key = Number(event.key)
 
-      if([0,1,2,3,4,5,6,7,8,9].includes(key) && !buzzed.includes(key)){
-
-        setBuzzed([...buzzed, key])
-       let newData = {...data}
-       const player = Number(event.key)
-       playSound(player, sfx, null, data, setData)
+      if([0,1,2,3,4,5,6,7,8,9].includes(key) && !data.buzzed.includes(key)){
+       let newData = {...data, buzzed: [...data.buzzed,key]}
+       playSound(key, sfx, null, data, setData)
 
        let i = 0;
 
        while (i < newData.players.length){
-        if(newData.players[i].active === player && playerHasNotAnsweredBefore(newData.players[i], data)){
+        if(newData.players[i].active === key && playerHasNotAnsweredBefore(newData.players[i], data)){
           let score = 0
 
           if(data.options.MULTIPLE_CHOICE){

@@ -79,6 +79,7 @@ const [data, setData] = useState({
   option: false,
   questions:[],
   filteredQuestions:[],
+  buzzed:[],
   ...loadedData
 });
 
