@@ -4,24 +4,12 @@
 }
 
 .flex-container {
-  /* We first create a flex layout context */
   display: flex;
-  
-  /* Then we define the flow direction 
-     and if we allow the items to wrap 
-   * Remember this is the same as:
-   * flex-direction: row;
-   * flex-wrap: wrap;
-   */
   flex-flow: row wrap;
-  
-  /* Then we define how is distributed the remaining space */
   justify-content: space-around;
-  
   padding: 0;
   margin: 0;
   list-style: none;
-  margin-top: 50px;
 }
 
 .flex-container li {
@@ -34,26 +22,49 @@
   position: relative;
   border:  solid 5px #2f3036;
   background: transparent;
-  color: #2f3036;
 }
 
 .flex-container li.small {
-  background: white;
-  padding: 5px;
+  padding: 2px;
   width: 90px;
   margin-top: 10px;
   line-height: 30px;
-  color: #2f3036;
   font-weight: bold;
   font-size: 1em;
   text-align: center;
   border: solid #2f3036 2px;
 }
 
+.flex-container li.team {
+  width: 250px;
+  height: 120px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1em;
+  text-align: center;
+  position: relative;
+  border:  solid 5px #2f3036;
+  background: transparent;
+}
+
 .flex-container li.small input{
   width: 50px;
   background-color: #19c589;
 }
+
+.flex-container li.small button {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: none;
+  color: inherit;
+  }
+.flex-container li.small p {
+  display: inline;
+  padding: 1px;
+  border:  solid 1px;
+  float: left;
+  }
 
 .flex-container li.active {
   color: white;
@@ -80,6 +91,11 @@
   line-height: 100px;
 }
 
+.flex-container.dark{
+  background: black;
+  color: white;
+}
+
 #banner {
   text-align: center;
   display: flex;
@@ -87,7 +103,7 @@
   justify-content: center;
   align-items:center;
   vertical-align: middle;
-  margin-top: 50px;
+  margin-bottom: 40px;
 }
 
 #banner.stage0 .box {
@@ -108,6 +124,10 @@
 #banner.stage2 .active-choice {
   border: solid 5px black;
   font-size: 200%;
+  border-width: 9px;
+  border-style: solid;
+  border-image-source: linear-gradient(to left, #93e1d8, #AA4465);
+  border-image-slice: 1;
 }
 
 #banner.stage2 ul {
@@ -158,7 +178,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1;
 }
 
 #question-map img {
@@ -180,13 +200,9 @@
   background-color: #DDFFF7;
   position: relative;
   box-shadow: 10px 10px 42px 0 rgba(0,0,0,0.75);
-  margin-bottom: 100px;
   vertical-align: middle;
   text-align: center;
-  width: 100%;
-  height: 100%;
   font-weight: bolder;
-  margin-bottom: 0px;
 }
 
 .box:after, .box:before{
@@ -206,7 +222,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 300px;
+  min-height: 300px;
+  min-width: 800px;
+  padding: 30px;
 }
 
 @keyframes border {
@@ -251,10 +269,17 @@
 
 #banner .box.questionOptionfalse .box-contents {
   display: flex;
-  flex-direction: row;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#banner .box.questionOptionfalse .box-contents div {
+  display: flex;
+  flex-basis: 90%;
+  flex: 1;
 }
 
 .stage2 .box h1, .stage3 .box h1 {
@@ -291,4 +316,118 @@
   left: 0;
   text-align: center;
   font-size: 30px;
+}
+
+#timer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  color: white;
+  font-weight: bolder;
+  padding: 1px;
+  border: none;
+  font-size: 45px;
+  width: 100%;
+  height: 100%;
+  background: none;
+  text-align: center;
+  z-index: -10;
+  vertical-align: middle;
+}
+
+#timer .timer-progress {
+  text-align: left;
+    background: linear-gradient(-45deg, #AA4465, #e73c7e, #AA4465, #27ccb1,#27ccb1,#AA4465);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    border: solid 4px rgba(0,0,0,.1);
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+
+}
+
+#skip{
+  background: rgba(0,0,0,.5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border: none;
+}
+
+.answered0, .answered1, .answered2, .answered3, .answered4, .answered5, .answered6, .answered7, .answered8, .answered9 {
+  border-style: solid;
+  border-width: 1px;
+  width: 50px;
+  margin: 5px;
+  height: 100px;
+}
+
+.answered0 {
+  border-color: silver;
+  color: silver;
+}
+
+.answered1 {
+  border-color: gray;
+  color: gray;
+}
+
+.answered2 {
+  border-color: hotpink;
+  color: hotpink;
+}
+
+.answered3 {
+  border-color: limegreen;
+  color: limegreen;
+}
+
+.answered4 {
+  border-color: green;
+  color: green;
+}
+
+.answered5 {
+  border-color: navy;
+  color: navy;
+}
+
+.answered6 {
+  border-color: purple;
+  color: purple;
+}
+
+.answered7 {
+  border-color: orange;
+  color: orange;
+}
+
+.answered8 {
+  background: white;
+  color: black;
+  border-color: black;
+}
+
+.answered9 {
+  border-color: powderblue;
+  color: powderblue;
+}
+
+.answered span:first-child {
+  font-size: 30%;
+}
+
+.answered span:last-child {
+  /**/
 }

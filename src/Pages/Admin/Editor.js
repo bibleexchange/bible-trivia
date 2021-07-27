@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ImageMap from "../ImageMap";
 import SoundPlayer from "../SoundPlayer"
 
-function Editor({styles, question, updateQuestion, setQuestion, create,save,questions, setQuestions, clear, resetEditor}){
+function Editor({styles, question, updateQuestion, setQuestion, create,save, data, setData, clear, resetEditor}){
   let image = ''
   let audio = ''
+  const questions = data.questions
 
-  if(question.changed.image != undefined && question.changed.image != "" && question.changed.image.src != ""){
+  if(question.changed.image !== undefined && question.changed.image !== "" && question.changed.image.src !== ""){
     image = <ImageMap src={question.changed.image.src} coords={question.changed.image.coords} />
   }
   
-  if(question.changed.audio != undefined && question.changed.audio != ""){
+  if(question.changed.audio !== undefined && question.changed.audio !== ""){
     audio = <SoundPlayer src={question.changed.audio} hide={false} onEnd={false}/>
   }
 
@@ -18,7 +19,7 @@ function Editor({styles, question, updateQuestion, setQuestion, create,save,ques
 
   return (<div className="admin-row">
     <ul className="admin-column" style={styles.editor}>
-          <li>ID: {q.id}</li>
+          <li>ID: <input style={styles.inputs} value={q.id?q.id:""} name="id" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
           <li>QUESTION: <input style={styles.inputs} value={q.question?q.question:""} name="question" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
           <li>SCRIPTURE: <input style={styles.inputs}  value={q.scripture?q.scripture:""} name="scripture" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
           <li>CHOICES: <input style={styles.inputs} value={q.choices?q.choices:[]} name="choices" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
@@ -28,9 +29,9 @@ function Editor({styles, question, updateQuestion, setQuestion, create,save,ques
           <li>IMAGE TOP: <input style={styles.inputs} value={q.image?q.image.coords.top:""} name="imgtop" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
           <li>IMAGE LEFT: <input style={styles.inputs} value={q.image?q.image.coords.left:""} name="imgleft" onChange={(e)=>{updateQuestion(e,question,setQuestion)}}/></li>
 
-           <button onClick={()=>{create(question,setQuestion,questions,setQuestions)}}>create</button><button onClick={()=>{save(question,setQuestion,questions,setQuestions)}}>save</button>
+           <button onClick={()=>{create(question,setQuestion,data,setData)}}>create</button><button onClick={()=>{save(question,setQuestion,data,setData)}}>save</button>
            <button onClick={()=>{resetEditor(question, setQuestion,questions)}}>reset</button>
-           <button onClick={()=>{clear(question,setQuestion,questions,setQuestions)}}>clear</button>
+           <button onClick={()=>{clear(question,setQuestion,questions,setData)}}>clear</button>
         </ul>
 
         <div className="admin-column">{image} {audio}</div>

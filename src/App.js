@@ -2,8 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 import './App.css';
@@ -13,8 +12,9 @@ import Admin from './Pages/Admin'
 import SpeedTrivia from './Pages/SpeedTrivia'
 import Style from './Pages/Style'
 import Navigation from './Pages/Navigation'
+import MusicPlayer from './Pages/MusicPlayer'
 
-export default function BasicExample() {
+export default function BibleGames() {
   return (
     <Router>
         <Switch>
@@ -29,6 +29,9 @@ export default function BasicExample() {
           </Route>
           <Route path="/style">
             <Style />
+          </Route>
+          <Route path="/music">
+            <MusicPlayer />
           </Route>
         </Switch>
         <Navigation />

@@ -6,7 +6,8 @@ ul#nav {
     padding:0;
     width: 100%;
     background: #93e1d8;
-    bottom: 0;
+    bottom: 50px;
+    margin-bottom: 50px;
 }
 /*Create a horizontal list with spacing*/
 ul#nav li {

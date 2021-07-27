@@ -13,13 +13,15 @@ function playerHasNotAnsweredBefore(player, data){
 
 function nextOption(data, setData){
 
+  let choicesLength = data.questions[data.question].choices.length
+
   if(data.option === false){
 
     let newData = {...data}
     let option = 0
     
-    if(!data.mc){
-      option = Math.floor(Math.random() * 4);
+    if(!data.options.MULTIPLE_CHOICE){
+      option = Math.floor(Math.random() * choicesLength);
     }
     
     newData.option = option;
@@ -29,11 +31,12 @@ function nextOption(data, setData){
     setData(newData)
 
     setIntID = setInterval(function(){ 
-      
+      //console.log('next option running...')
       let newNewData = {...newData}
       option++;      
       
-      if(newNewData.questions[newNewData.question].choices.length < (option+1)){
+      if(choicesLength < (option+1)){
+        console.log("next option stopping...", data)
         option = false
         newNewData.stage = 3
         clearInterval(setIntID);
@@ -82,7 +85,7 @@ function shuffleArray(array){
   return array;
 }
 
-const alphpaOpts = ["A","B","C","D","E","F","G","H","I","J","K","L","M"]
+const alphaOpts = ["A","B","C","D","E","F","G","H","I","J","K","L","M"]
 
 function translateOption(question){
   let answerIndex = question.choices.length-1
@@ -92,15 +95,64 @@ function translateOption(question){
     if(op.index === answerIndex){indexOf = index}
   })
 
-  return alphpaOpts[indexOf]
+  return alphaOpts[indexOf]
+}
+
+function calculateScores(scores,round){
+  if(scores.length <= 0){
+    return {
+      score:0, alltime:0,round:0
+    }
+  }
+
+  let allTimeScore = Number(0)
+  let roundScore = Number(0)
+  let correct = 0
+
+  scores.forEach(function(score){
+    if(Math.sign(score.score) === 1){
+      correct++;
+    }
+    allTimeScore += Number(score.score);
+    if(score.round === round){
+      roundScore +=score.score;
+    }
+  })
+
+  let sc = Math.round(Number(allTimeScore)/correct)
+
+  if(sc < 0){
+    sc = 0
+  }
+  return {
+    score: sc,
+    alltime: allTimeScore,
+    round:roundScore
+  };
+}
+
+function saveAsFile(data, name, skipFile = false){
+  
+  if(!skipFile){
+    var fileContent = JSON.stringify(data)
+    var bb = new Blob([fileContent ], { type: 'text/plain' });
+    var a = document.createElement('a');
+    a.download = name + ".json";
+    a.href = window.URL.createObjectURL(bb);
+    a.click();
+  }
+
+  localStorage.setItem(name,JSON.stringify(data))
 }
 
 export {
   activateBuzzers,
-  alphpaOpts,
+  alphaOpts,
+  calculateScores,
   playerHasNotAnsweredBefore,
   nextOption,
   getRandom,
   shuffleArray,
+  saveAsFile,
   translateOption
 }

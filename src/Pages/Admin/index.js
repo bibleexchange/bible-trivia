@@ -1,13 +1,15 @@
 import './Index.css';
 import React, { useState } from 'react';
-import Navigation from '../Navigation'
-import UploadQuestionsForm from './UploadQuestionsForm'
+import UploadJsonForm from '../../features/UploadJsonForm'
 import Editor from './Editor'
 import Memo from './Memo'
+import {saveAsFile} from '../../Helpers'
 
 import {
   Link
 } from "react-router-dom";
+
+const DB_FILE = 'bible-trivia-db';
 
 const qTemplate = {
   original: JSON.stringify({
@@ -41,31 +43,50 @@ const styles = {
   }
 }
 
-const [questions, setQuestions] = useState({memo:"",questions:[]});
+const lData = localStorage.getItem(DB_FILE)
+let storedData = {}
+
+if(lData !== null){
+  storedData = JSON.parse(lData)
+}
+const [data, setData] = useState({
+  memo:"",
+  questions:[],
+  options:{},
+  ...storedData
+});
+
 const [question, setQuestion] = useState({...qTemplate});
-const [search, setSearch] = useState("");
+
+const questions = data.questions.reverse()//.slice(0).reverse()
 
   return (
     <div>
       <h1>Admin</h1>
-      <button onClick={()=>{store(questions)}}>store</button>
-      <Memo memo={questions.memo} updateMemo={(e)=>{
-        updateMemo(e,questions,setQuestions)
+      <button onClick={()=>{saveAsFile(data, DB_FILE)}}>store</button>
+      <button onClick={()=>{saveAsFile(data, DB_FILE, true)}}>update local</button>
+
+      <button className="small">LOAD QUESTIONS: <UploadJsonForm doWithResults={(json)=>{
+          const newData = {...data, questions:[...json.questions], memo: json.memo}
+          setData(newData)
+          localStorage.setItem('bible-trivia-db',JSON.stringify(newData))
+      }}/></button>
+
+      <Memo memo={data.memo} updateMemo={(e)=>{
+        updateMemo(e,data,setData)
       }}/>
         <hr />
 
-      <UploadQuestionsForm setQuestions={setQuestions}/>
+      LOAD DATA:<UploadJsonForm doWithResults={setData}/>
 
       <div>
-        <h1>{questions.id} [{questions.questions.length}]</h1>
+        <h1>{data.id} [{data.questions.length}]</h1>
 
         <Editor question={question} styles={styles} updateQuestion={updateQuestion} setQuestion={setQuestion} 
-        create={create} save={save} questions={questions} setQuestions={setQuestions} clear={clear} resetEditor={resetEditor}/>
+        create={create} save={save} data={data} setData={setData} clear={clear} resetEditor={resetEditor}/>
 
-        <input value={search} onChange={(e)=>{setSearch(e.target.value)}} />
-
-        <ul>
-          {questions.questions.slice(0).reverse().map((bibleQ)=>{
+        <ul><h1>{questions.length}</h1>
+          {questions.map((bibleQ)=>{
         
               let needsMoreChoices = ""
               let needsQuestion = ""
@@ -74,38 +95,32 @@ const [search, setSearch] = useState("");
               let hasImage = ""
               let hasAudio = ""
               let choicesIsArray = Array.isArray(bibleQ.choices)? "":"[NOT AN ARRAY]"
-              let test1 = false
 
-              if(bibleQ.tags){
-                test1 = bibleQ.tags.includes(search)
-              }
-
-              if(bibleQ.choices.length < 4){
+              if(bibleQ.choices.length < 2){
                 needsMoreChoices = "[CHOICES:"+bibleQ.choices.length+"]"
               }
 
-              if(bibleQ.tags == undefined || bibleQ.tags.length < 1){
+              if(bibleQ.tags === undefined || bibleQ.tags.length < 1){
                 needsTags = "[TAGS_MISSING]"
               }
 
-              if(bibleQ.question == "" || bibleQ.question == undefined){
+              if(bibleQ.question === "" || bibleQ.question === undefined){
                 needsQuestion = "[QUESTION_MISSING]"
               }
 
-              if(bibleQ.scripture == "" || bibleQ.scripture == undefined){
+              if(bibleQ.scripture === "" || bibleQ.scripture === undefined){
                 needsScripture = "[SCRIPTURE_MISSING]"
               }
 
               if(bibleQ.audio !== undefined && bibleQ.audio !== ""){
-                hasAudio = <img src="/img/audio.svg" style={{width:"15px"}}/>
+                hasAudio = <img alt="Headphones" src="/img/audio.svg" style={{width:"15px"}}/>
               }
 
              if(bibleQ.image !== undefined && bibleQ.image.src !== undefined && bibleQ.image.src !== ""){
-                hasImage = <img src="/img/image.svg" style={{width:"15px"}}/>
+                hasImage = <img alt="cross" src="/img/image.svg" style={{width:"15px"}}/>
               }
 
-              if(test1 || bibleQ.question.includes(search)){
-                return <li key={bibleQ.id} onClick={()=>{
+                return <li key={bibleQ.id}><button onClick={()=>{
                   let newQ = {
                     ...qTemplate,
                     original: JSON.stringify({...bibleQ}),
@@ -113,11 +128,10 @@ const [search, setSearch] = useState("");
                   }
                     setQuestion(newQ)
                     window.scrollTo({ top: 0, behavior: 'smooth' })
-                  }}>{bibleQ.id} {bibleQ.question} {hasAudio} {hasImage}<span style={{color:"red"}}>{choicesIsArray} {needsMoreChoices} {needsQuestion} {needsScripture} {needsTags}</span></li>
-            }else{
-              return null
-            }
+                  }}>edit</button>
+                  <Link to={"/speed-trivia/"+bibleQ.id}>VISIT</Link>{bibleQ.id} {bibleQ.question} {hasAudio} {hasImage} (options:{bibleQ.choices.length})<span style={{color:"red"}}>{choicesIsArray} {needsMoreChoices} {needsQuestion} {needsScripture} {needsTags}</span></li>
           })}
+
 
           
         </ul>
@@ -138,6 +152,9 @@ function updateQuestion(e, question, setQuestion){
 
     case 'question':
       nQ.changed.question = e.target.value
+      break;
+    case 'id':
+      nQ.changed.id = e.target.value
       break;
     case 'scripture':
       nQ.changed.scripture = e.target.value
@@ -193,6 +210,7 @@ function updateQuestion(e, question, setQuestion){
 function create(question,setQuestion,data,setData){
   let newData = {...data}
   let q = {...question.changed}
+
   q.id = data.questions.length
 
   newData.questions.push(q)
@@ -221,7 +239,7 @@ function save(question,setQuestion,data,setData){
     setData(newData)
 
     setQuestion(question)
-    localStorage.setItem('bible-questions',JSON.stringify(newData))
+    localStorage.setItem(DB_FILE,JSON.stringify(newData))
   }
 
   
@@ -231,17 +249,6 @@ function clear(question,setQuestion,data,setData){
   setQuestion(qTemplate)
 }
 
-function store(data){
-  var fileContent = JSON.stringify(data)
-  var bb = new Blob([fileContent ], { type: 'text/plain' });
-  var a = document.createElement('a');
-  a.download = data.id + ".json";
-  a.href = window.URL.createObjectURL(bb);
-  a.click();
-
-  localStorage.setItem('bible-questions',JSON.stringify(data.questions))
-}
-
 function updateMemo(e,data,setData){
   let newData = {...data}
   newData.memo = e.target.value
@@ -249,10 +256,9 @@ function updateMemo(e,data,setData){
 }
 
 function resetEditor(question,setQuestion, questions){
-
   let nQ = {...question}
-  nQ.original = {...questions.questions[question.changed.id]}
-  nQ.changed = {...questions.questions[question.changed.id]}
+  nQ.original = {...questions[question.changed.id]}
+  nQ.changed = {...questions[question.changed.id]}
   setQuestion(nQ)
 }
 

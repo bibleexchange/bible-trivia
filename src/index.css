@@ -1,11 +1,4 @@
 html, body {
-  z-index: 1;
-  position: relative;
-  width: 100%; height: 100%;
-  background-color: #DDFFF7;
-}
-
-body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -14,17 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-html, body, #root, .App {
-  height: 100%;
-  width: 100%;
-}
-
 .App {
-  overflow: hidden;
-  height: auto;
+  padding-top: 30px;
 }
